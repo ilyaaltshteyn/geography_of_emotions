@@ -135,6 +135,13 @@ for link in links:
         records.append(recor)
         summaries.append(summar)
 
-
+#Make a dataframe out of the scraped data and print it to a csv file:
+last_statements = pd.Series(last_statements)
+occupations = pd.Series(occupations)
+records = pd.Series(records)
+summaries = pd.Series(summaries)
+dict_of_series = {'last_statements' : last_statements, 'occupations' : occupations, 'records' : records, 'summaries' : summaries}
+frame = pd.DataFrame(dict_of_series)
+frame.to_csv('/Users/ilya/Projects/last_words_project/raw_data.csv')
 
 
