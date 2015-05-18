@@ -1,0 +1,26 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+<body>
+<script>
+
+function getTweets(n){
+    $.ajax({
+      type: "POST",
+      url: "127.0.0.1:5000/predict",
+      data: n,
+      success: function(data){console.log(data)},
+      dataType: "text"
+    });
+    // $.post( n, function(data){console.log(data)} );
+}
+</script>
+
+<FORM NAME="myform" ACTION="" METHOD="GET">
+How many tweets you wanna see? <BR>
+<INPUT TYPE="text" NAME="inputbox" VALUE=""><P>
+<INPUT TYPE="button" NAME="button" Value="Click" onClick="getTweets(this.form)">
+</FORM>
+</body>
+</html>
