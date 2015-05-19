@@ -3,7 +3,9 @@ from sklearn.linear_model import LogisticRegression
 import numpy as np
 import ast
 
-data_source = "/Users/ilya/Projects/geography_of_emotions/lonely_tweets.txt"
+direct = "/Users/ilya/Projects/geography_of_emotions/"
+filename = "lonely_tweets.txt"
+data_source = direct + filename
 
 def remove_non_ascii(text):
     return ''.join(i for i in text if ord(i)<128)
@@ -20,14 +22,17 @@ def get_n_last_tweets(n):
     with open(data_source, 'r') as d:
         data = d.readlines()
         n_tweets = []
-        for nth_tweet in range(n):
+        for nth_tweet in range(int(n)):
             text = remove_non_ascii(ast.literal_eval(data[-(nth_tweet+2)])['text'])
             n_tweets.append(text)
-    return n_tweets
+    return {"tweets": n_tweets}
 
 # Initialize the app
 
 app = flask.Flask(__name__)
+
+filename = "web_page.html"
+
 
 
 # An example of routing:
@@ -38,8 +43,10 @@ app = flask.Flask(__name__)
 
 @app.route("/")
 def hello():
+    with open(direct + filename, 'r') as viz_file:
+        return viz_file.read()
 
-    return str(last_tweet())
+    # return str(last_tweet())
 
 
 # Let's turn this into an API where you can post input data and get
@@ -55,7 +62,11 @@ def hello():
 def predict():
 
     # read the data that came with the POST request as a dict
+    print "="*100
     data = flask.request.json
+    print data
+    print "="*100
+    n_tweets = data['n']
 
     # let's convert this into a numpy array so that we can
     # stick it into our model
@@ -74,7 +85,7 @@ def predict():
 
     # Return a response with a json in it
     # flask has a quick function for that that takes a dict
-    return flask.jsonify(get_n_last_tweets(data))
+    return flask.jsonify(get_n_last_tweets(n_tweets))
 
 
 # Start the server, continuously listen to requests.
