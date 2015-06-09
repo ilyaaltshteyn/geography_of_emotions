@@ -1,0 +1,40 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+<body>
+
+<FORM id="nick" NAME="myform" ACTION="" METHOD="GET">
+    How many tweets you wanna see? <BR>
+    <INPUT id="inbox" TYPE="text" NAME="inputbox" VALUE=""><P>
+    <INPUT TYPE="submit" value="submit">
+</FORM>
+
+<p id="outStuff"></p>
+<script>
+
+function changeText(inp){
+ document.getElementById('outStuff').innerHTML = ('The tweets are ' + inp);
+}
+
+function getTweets(n) {
+    $.ajax
+    ({
+        type: "POST",
+        url: "/predict",
+        dataType: 'json',
+        contentType: "application/json;",
+        data: JSON.stringify({'n' : n}),
+        success: function(data){ changeText(JSON.stringify(data)); }
+    })
+}
+
+$("#nick").on("submit", function(event){
+    event.preventDefault();
+    console.log($("#inbox").val());
+    getTweets($("#inbox").val());
+});
+
+</script>
+</body>
+</html>
